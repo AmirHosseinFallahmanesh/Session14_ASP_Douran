@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button onclick="getAll()">Get All data</button>
+    <button onclick="get(2)">Get single data</button>
+    <hr>
+    <form onsubmit="sendData(event)">
+        <input type="text" name="name" placeholder="enter Name"><br>
+        <input type="text" name="surname" placeholder="enter surname"><br>
+        <input type="text" name="age" placeholder="enter age"><br>
+        <input type="submit" value="add">
+    </form>
+    <div id="result"></div>
+
+    <script>
+        function getAll(){
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                document.getElementById('result').innerHTML=xhttp.response
+                }
+            };
+            xhttp.open("GET", "http://localhost:14503/api/std", true);
+            xhttp.send();
+        }
+
+        function get(id){
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                document.getElementById('result').innerHTML=xhttp.response
+                }
+            };
+            xhttp.open("GET", `http://localhost:14503/api/std/${id}`, true);
+            xhttp.send();
+        }
+
+        function sendData(e){
+            e.preventDefault()
+             let name=e.target[0].value
+             let surname=e.target[1].value
+             let age=+ e.target[2].value
+            
+             let std={
+                name:name,
+                surname:surname,
+                age:age
+             }
+
+            let data=JSON.stringify(std)
+          
+
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                document.getElementById('result').innerHTML=xhttp.response
+                }
+            };
+           
+            xhttp.open("POST", 'http://localhost:14503/api/std',);
+            xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhttp.send(data);
+
+        }
+    </script>
+</body>
+</html>
